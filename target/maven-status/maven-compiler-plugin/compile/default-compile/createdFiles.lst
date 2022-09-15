@@ -1,0 +1,6 @@
+com\mycompany\nic_validation_rest\JAXRSConfiguration.class
+Controller\UserController.class
+Utilities\DBconnection.class
+Model\User.class
+com\mycompany\nic_validation_rest\resources\JavaEE8Resource.class
+Model\Nic.class

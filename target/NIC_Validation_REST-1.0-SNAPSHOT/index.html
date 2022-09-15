@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registration Form</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <style>
+            h1{
+                text-align: center;
+            }
+
+            .invisibleNic{
+                display: none;
+            }
+
+            .register-container{
+                border: 2px solid cyan;
+                border-radius: 20px;
+                margin: 30px;
+                padding: 30px;
+                display: block;
+            }
+
+            .register-container>form{
+                border: 1px solid blue;
+                padding: 20px;
+                border-radius: 20px;
+                margin-top: 20px;
+                /*                margin: 20px;*/
+            }
+            #error{
+                color: red;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Register Form</h1>
+
+
+
+
+        <div class="register-container">
+            <a class="btn btn-primary" style="float:right" href="view.html">View All Users</a>
+            <br><br>
+
+            <!--NIC data validation-->
+            <form action="" method="post" id="formNicData">
+                <div class="form-group">
+                    <label for="nic">NIC number</label>
+                    <input type="text" class="form-control" id="nicNum" name="nicNum" placeholder="Enter the NIC" required>
+                    <small id="error" class="form-text text-muted"></small>
+                </div>
+                <button type="submit" class="btn btn-primary">Try NIC</button>
+            </form>
+
+
+            <!--Form Data Field-->
+            <form action="view.html" method="post" id="form">
+
+                <div class="form-group">
+                    <label for="nic_num">NIC number</label>
+                    <input type="text" class="form-control" name="nicNumber" id="nic" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate">Birth Date</label>
+                    <input type="text" class="form-control" name="birthdate" id="birthdate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" class="form-control" name="age" id="age" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <input type="text" class="form-control" name="gender" id="gender" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Enter full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nationality">Nationality</label>
+                    <select class="form-control" name="nationality" id="nationality">
+                        <option value="sinhala">Sinhala</option>
+                        <option value="tamil">Tamil</option>
+                        <option value="english">English</option>
+                    </select>
+                </div>
+                <br><br>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+
+
+
+
+
+            <script>
+
+
+
+                var formNicData = document.getElementById('formNicData')
+                var form = document.getElementById('form')
+
+                formNicData.addEventListener('submit', function (e) {
+                    console.log("event listner working for try nic")
+
+                    e.preventDefault();
+                    var nicNum = document.getElementById('nicNum').value
+
+                    // fetch post request
+                    var derivedData = fetch("http://localhost:8080/NIC_Validation_REST/resources/user/nic-generate",
+                            {
+                                method: 'POST',
+                                body: JSON.stringify({
+                                    id: "",
+                                    nic: nicNum,
+                                    fullname: "",
+                                    address: "",
+                                    nationality: "",
+                                }),
+                                headers: {
+                                    "Content-type": "application/json; charset=UTF-8"
+                                }
+                            })
+                            .then(function (response) {
+                                return response.json()
+                            })
+
+                    derivedData.then(result => {
+                        console.log(result)
+
+                        var derivedNic = result.nic;
+                        var derivedBirthdate = result.birthdate;
+                        var derivedAge = result.age;
+                        var derivedGender = result.gender;
+                        var derivedErrMsg = result.errMsg;
+
+                        console.log("Error msg is " + derivedErrMsg);
+
+                        if (derivedErrMsg == "") {
+                            //Alert box
+                            swal("Good job!", "NIC data retrieved successfully!", "success");
+                            
+                        }
+
+                        document.getElementById('nic').value = derivedNic;
+                        document.getElementById('birthdate').value = derivedBirthdate;
+                        document.getElementById('age').value = derivedAge;
+                        document.getElementById('gender').value = derivedGender;
+                        document.getElementById('error').innerHTML = derivedErrMsg;
+                    })
+
+
+
+                })
+
+                form.addEventListener('submit', function (e){
+                    // auto submission of the form
+
+                    console.log("event listner working")
+                    e.preventDefault();
+   
+                    var fullname = document.getElementById('fullname').value
+                    var address = document.getElementById('address').value
+                    var nationality = document.getElementById('nationality').value
+                    var nic = document.getElementById('nic').value
+                    var birthdate = document.getElementById('birthdate').value
+                    var age = document.getElementById('age').value
+                    var gender = document.getElementById('gender').value
+
+                    swal({
+                        title: "Do you want to continue?",
+                        icon: "warning",
+                        buttons: {
+                            cancelBtn: {
+                                text: "Cancel"
+                            },
+                            yesBtn: {
+                                text: "Yes",
+                                value: "yes"
+                            }
+                        },
+                        dangerMode: true,
+                    })
+                            .then((value) => {
+                                if (value == "yes") {
+
+                                    // fetch post request
+                                    fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/save-user",
+                                            {
+                                                method: 'POST',
+                                                body: JSON.stringify({
+                                                    id: "",
+                                                    fullname: fullname,
+                                                    address: address,
+                                                    nationality: nationality,
+                                                    nic: nic,
+                                                    birthdate: birthdate,
+                                                    age: age,
+                                                    gender: gender
+                                                }),
+                                                headers: {
+                                                    "Content-type": "application/json; charset=UTF-8"
+                                                }
+                                            }
+                                    )
+
+                                    swal({
+                                        title: "Good job!",
+                                        text: "New user successfully registered!",
+                                        icon: "success"
+                                    })
+                                            .then((added) => {
+                                                if (added) {
+                                                    document.location.replace('./view.html');
+                                                }
+                                            });
+
+                                } else {
+
+                                }
+                            });
+
+                })
+
+
+            </script>
+
+        </div>
+    </body>
+</html>
