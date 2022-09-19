@@ -2,5 +2,7 @@ com\mycompany\nic_validation_rest\JAXRSConfiguration.class
 Controller\UserController.class
 Utilities\DBconnection.class
 Model\User.class
+Model\Student.class
 com\mycompany\nic_validation_rest\resources\JavaEE8Resource.class
+Model\UserJson.class
 Model\Nic.class

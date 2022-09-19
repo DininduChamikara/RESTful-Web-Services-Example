@@ -239,18 +239,23 @@
                                 if (value == "yes") {
 
                                     // fetch post request
-                                    fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/edit-user",
+                                    fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-edit-user",
                                             {
                                                 method: 'POST',
                                                 body: JSON.stringify({
-                                                    id: editId,
-                                                    fullname: fullname,
-                                                    address: address,
-                                                    nationality: nationality,
-                                                    nic: nic,
-                                                    birthdate: birthdate,
-                                                    age: age,
-                                                    gender: gender
+                                                    requestId: "2222",
+                                                    method: "editUser",
+                                                    user: {
+                                                        id: editId,
+                                                        fullname: fullname,
+                                                        address: address,
+                                                        nationality: nationality,
+                                                        nic: nic,
+                                                        birthdate: birthdate,
+                                                        age: age,
+                                                        gender: gender
+                                                    }
+
                                                 }),
                                                 headers: {
                                                     "Content-type": "application/json; charset=UTF-8"
