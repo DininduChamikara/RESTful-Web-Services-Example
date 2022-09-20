@@ -93,7 +93,7 @@ and open the template in the editor.
             }
 
 
-            const api_url_delete = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/delete-user";
+            const api_url_delete = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-delete-user";
 
 
             function deleteMsgBox(userId) {
@@ -127,14 +127,9 @@ and open the template in the editor.
                         {
                             method: 'POST',
                             body: JSON.stringify({
-                                id: userId,
-                                fullname: "",
-                                address: "",
-                                nationality: "",
-                                nic: "",
-                                birthdate: "",
-                                age: 0,
-                                gender: "",
+                                requestId: "5555",
+                                method: "deleteUser",
+                                id: userId
                             }),
                             headers: {
                                 "Content-type": "application/json; charset=UTF-8"
@@ -164,7 +159,7 @@ and open the template in the editor.
                 const data = await response.json();
 
                 console.log(data);
-                
+
                 console.log("Array size is " + data.users.length);
 
                 count = data.users.length;
