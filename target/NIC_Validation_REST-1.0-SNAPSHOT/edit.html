@@ -107,18 +107,13 @@
                 deriveDbData(editId);
 
                 function deriveDbData(editId) {
-                    var derivedDataDB = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/retrieve-db",
+                    var derivedDataDB = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-retrieve-db",
                             {
                                 method: 'POST',
                                 body: JSON.stringify({
-                                    id: editId,
-                                    fullname: "",
-                                    address: "",
-                                    nationality: "",
-                                    nic: "",
-                                    birthdate: "",
-                                    age: 0,
-                                    gender: "",
+                                    requestId: "6666",
+                                    method: "getAllUsers",
+                                    id: editId
                                 }),
                                 headers: {
                                     "Content-type": "application/json; charset=UTF-8"
@@ -131,13 +126,13 @@
                     derivedDataDB.then(result => {
                         console.log(result)
 
-                        var derivedDbFullname = result.fullname;
-                        var derivedDbAddress = result.address;
-                        var derivedDbNationality = result.nationality;
-                        var derivedDbNic = result.nic;
-                        var derivedBirthdate = result.birthdate;
-                        var derivedAge = result.age;
-                        var derivedGender = result.gender;
+                        var derivedDbFullname = result.user.fullname;
+                        var derivedDbAddress = result.user.address;
+                        var derivedDbNationality = result.user.nationality;
+                        var derivedDbNic = result.user.nic;
+                        var derivedBirthdate = result.user.birthdate;
+                        var derivedAge = result.user.age;
+                        var derivedGender = result.user.gender;
 
                         document.getElementById('nicNum').value = derivedDbNic;
                         document.getElementById('fullname').value = derivedDbFullname;
@@ -163,15 +158,13 @@
                     var nicNum = document.getElementById('nicNum').value
 
                     // fetch post request
-                    var derivedData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/nic-generate",
+                    var derivedData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nic-genarate",
                             {
                                 method: 'POST',
                                 body: JSON.stringify({
-                                    id: "",
-                                    nic: nicNum,
-                                    fullname: "",
-                                    address: "",
-                                    nationality: "",
+                                    requestId: "4444",
+                                    method: "searchUser",
+                                    nicNum: nicNum
                                 }),
                                 headers: {
                                     "Content-type": "application/json; charset=UTF-8"
@@ -184,11 +177,11 @@
                     derivedData.then(result => {
                         console.log(result)
 
-                        var derivedNic = result.nic;
-                        var derivedBirthdate = result.birthdate;
-                        var derivedAge = result.age;
-                        var derivedGender = result.gender;
-                        var derivedErrMsg = result.errMsg;
+                        var derivedNic = result.nicInfo.nic;
+                        var derivedBirthdate = result.nicInfo.birthdate;
+                        var derivedAge = result.nicInfo.age;
+                        var derivedGender = result.nicInfo.gender;
+                        var derivedErrMsg = result.nicInfo.errMsg;
 
                         document.getElementById('nic').value = derivedNic;
                         document.getElementById('birthdate').value = derivedBirthdate;

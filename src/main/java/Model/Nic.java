@@ -65,10 +65,15 @@ public class Nic {
         System.out.println("getNicData Started");
 
         Nic nic = new Nic();
+        
+        System.out.println(user.getNic());
 
         String nicNum = user.getNic();
         boolean validNic = false;
         boolean newId = false;
+        
+        
+        System.out.println("nicNum is " + nicNum);
 
         int month[] = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
