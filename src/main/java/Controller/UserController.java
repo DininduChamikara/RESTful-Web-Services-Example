@@ -5,13 +5,14 @@
  */
 package Controller;
 
+import Model.NationalityCount;
 import static Model.Nic.getNicData;
-import Model.Student;
 import Model.User;
 import static Model.User.deleteUserData;
 import static Model.User.edit;
 import static Model.User.getUserData;
 import static Model.User.save;
+import Model.UsersCount;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -286,6 +287,77 @@ public class UserController {
         return toBeSend;
     }
 
+    
+    @POST
+    @Path("json-nationality-data")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String getNationalityData(String request) {
+
+        //parse the json string into a JsonElement object
+        JsonElement jsonElement = JsonParser.parseString(request);
+
+        //get the json element as a json object
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+
+        //we can read json properties by name 
+        JsonElement requestId = jsonObj.get("requestId");
+        JsonElement requestMethod = jsonObj.get("method");
+        
+        
+
+        NationalityCount nc = new NationalityCount();
+        
+
+        //create an json object to send as response
+        String responseString = "{'requestId':" + requestId + ",'responseCode':1,'responseMessage':'Successfully retrieved', 'nationalityCounts':" + new Gson().toJson(nc.getNationalityCount()) + "}";
+        System.out.println("Response String:" + responseString);
+
+        //parse into json 
+        JsonElement response = JsonParser.parseString(responseString);
+
+        //create json object
+        JsonObject responseObject = response.getAsJsonObject();
+
+        //create json string to send
+        String toBeSend = new Gson().toJson(responseObject);
+
+        return toBeSend;
+    }
+    
+    @POST
+    @Path("json-gender-data")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String getGenderData(String request) {
+
+        //parse the json string into a JsonElement object
+        JsonElement jsonElement = JsonParser.parseString(request);
+
+        //get the json element as a json object
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+
+        //we can read json properties by name 
+        JsonElement requestId = jsonObj.get("requestId");
+        JsonElement requestMethod = jsonObj.get("method");
+
+        UsersCount uc = new UsersCount();
+        
+        //create an json object to send as response
+        String responseString = "{'requestId':" + requestId + ",'responseCode':1,'responseMessage':'Successfully retrieved', 'genderCounts':" + new Gson().toJson(uc.getUserCount()) + "}";
+        System.out.println("Response String:" + responseString);
+
+        //parse into json 
+        JsonElement response = JsonParser.parseString(responseString);
+
+        //create json object
+        JsonObject responseObject = response.getAsJsonObject();
+
+        //create json string to send
+        String toBeSend = new Gson().toJson(responseObject);
+
+        return toBeSend;
+    }
     
 
     @GET
