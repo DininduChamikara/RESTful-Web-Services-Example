@@ -26,6 +26,9 @@ and open the template in the editor.
                 padding: 30px;
                 display: block;
             }
+            a{
+                margin-left: 5px;
+            }
 
         </style>
     </head>
@@ -34,6 +37,7 @@ and open the template in the editor.
 
         <div class="view-container">
             <a class="btn btn-primary" style="float:right" href="index.html">Add New User</a>
+            <a class="btn btn-primary" style="float:right" href="dashboard.html">Dashboard</a>
             <br>
             <br>
             <br>
@@ -164,6 +168,8 @@ and open the template in the editor.
 
                 count = data.users.length;
                 dataset = data;
+                
+                data.users = data.users.reverse();
 
                 for (var i = 0; i < count; i++) {
                     tableContent = tableContent +
