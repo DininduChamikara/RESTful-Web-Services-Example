@@ -14,7 +14,7 @@ and open the template in the editor.
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        
+
         <style>
             .main-container{
                 display: flex;
@@ -49,7 +49,7 @@ and open the template in the editor.
             <div class="sidebar">
                 <ul class="sidebar--items">
                     <li>
-                        <a href="./dashboard.html">
+                        <a href="./index.html">
                             <span class="icon icon-1"><i class="ri-layout-grid-line"></i></span>
                             <span class="sidebar--item">Dashboard</span>
                         </a>
@@ -70,7 +70,7 @@ and open the template in the editor.
                     </li>
 
                 </ul>
-             
+
             </div>
 
             <div class="main--content">
@@ -83,6 +83,7 @@ and open the template in the editor.
                     <div class="title">
                         <h2 class="section--title">User Details</h2>
                     </div>
+
                     <div class="table">
                         <table>
                             <thead>
@@ -209,16 +210,11 @@ and open the template in the editor.
                         }
                 );
                 const data = await response.json();
-
                 console.log(data);
-
                 console.log("Array size is " + data.users.length);
-
                 count = data.users.length;
                 dataset = data;
-                
                 data.users = data.users.reverse();
-
                 for (var i = 0; i < count; i++) {
                     tableContent = tableContent +
                             "<tr>" +
@@ -237,22 +233,16 @@ and open the template in the editor.
                 }
 
                 document.getElementById("table_body").innerHTML = tableContent;
-
-
-
-                //// jQuery Functions
+                // jQuery Functions
 
                 $(function () {
                     const rowsPerPage = 10;
+//                    const rowsPerPage = $('#maxRows');
                     const rows = $('#table_body tr');
                     const rowsCount = rows.length;
                     const pageCount = Math.ceil(rowsCount / rowsPerPage); // avoid decimals
                     const numbers = $('#numbers');
-
-
-                    console.log("page count is " + pageCount);
-                    console.log(rows);
-
+                    
                     // Generate the pagination.
                     for (var i = 0; i < pageCount; i++) {
                         numbers.append('<li><a href="#">' + (i + 1) + '</a></li>');
@@ -260,49 +250,38 @@ and open the template in the editor.
 
                     // Mark the first page link as active.
                     $('#numbers li:first-child a').addClass('active');
-
                     // Display the first set of rows.
                     displayRows(1);
-
                     // On pagination click.
                     $('#numbers li a').click(function (e) {
                         var $this = $(this);
-
                         e.preventDefault();
-
                         // Remove the active class from the links.
                         $('#numbers li a').removeClass('active');
-
                         // Add the active class to the current link.
                         $this.addClass('active');
-
                         // Show the rows corresponding to the clicked page ID.
                         displayRows($this.text());
                     });
-
                     // Function that displays rows for a specific page.
                     function displayRows(index) {
                         var start = (index - 1) * rowsPerPage;
                         var end = start + rowsPerPage;
-
                         // Hide all rows.
                         rows.hide();
-
+                        let sliceLen = rows.slice(start, end).length;
+                        let deductIndex = rowsPerPage - sliceLen;
                         // Show the proper rows for this page.
-                        rows.slice(start, end).show();
+//                        rows.slice(start, end).show();
+                        rows.slice(start - deductIndex, end - deductIndex).show();
+//                        console.log("slice length is " + rows.slice(start, end).length)
                     }
                 });
-
             }
 
             getAllUsers();
 
-
-
         </script>
 
-        <script>
-
-        </script>
     </body>
 </html>

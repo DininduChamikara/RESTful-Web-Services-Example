@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Model.AgeGroup;
 import Model.NationalityCount;
 import static Model.Nic.getNicData;
 import Model.User;
@@ -170,6 +171,47 @@ public class UserController {
         return toBeSend;
 
     }
+    
+    
+    // getAgeGroupObj using proper json formate
+    @POST
+    @Path("json-age-groups")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String getAgeGroupObjJson(String request) {
+
+        System.out.println("json get age group objects called");
+        //parse the json string into a JsonElement object
+        JsonElement jsonElement = JsonParser.parseString(request);
+
+        //get the json element as a json object
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+
+        //we can read json properties by name 
+        JsonElement requestId = jsonObj.get("requestId");
+        JsonElement requestMethod = jsonObj.get("method");
+
+        List<AgeGroup> ageGroupObj = AgeGroup.findAgeGroup();
+
+        //create an json object to send as response
+        String responseString = "{'requestId':" + requestId + ",'responseCode':1,'responseMessage':'Age groups successfully retrieved', 'ageGroups':" + new Gson().toJson(ageGroupObj) + "}";
+        System.out.println("Response String:" + responseString);
+
+        //parse into json 
+        JsonElement response = JsonParser.parseString(responseString);
+
+        //create json object
+        JsonObject responseObject = response.getAsJsonObject();
+
+        //create json string to send
+        String toBeSend = new Gson().toJson(responseObject);
+
+        return toBeSend;
+
+//          return "Success";
+
+    }
+    
 
     // genarate nic using proper json formate
     @POST
