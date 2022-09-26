@@ -12,6 +12,26 @@ and open the template in the editor.
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        
+        <style>
+            .main-container{
+                display: flex;
+                flex-direction: row;
+                justify-content:space-around;
+            }
+            .chart-div{
+                background: rgb(241 210 67 / 10%);
+                border: 1px solid #DECCB2;
+                border-radius: 20px;
+                /*margin: 20px;*/
+                padding: 20px;
+            }
+        </style>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+       
+
         <title>Dashboard</title>
 
     </head>
@@ -31,21 +51,22 @@ and open the template in the editor.
                             <span class="sidebar--item">Dashboard</span>
                         </a>
                     </li>
+                    
                     <li>
-                        <a href="./dataVisualizationCharts.html">
-                            <span class="icon icon-5"><i class="ri-line-chart-line"></i></span>
-                            <span class="sidebar--item">Data Visualization</span>
+                        <a href="./addNewUser.html">
+                            <span class="icon icon-1"><i class="ri-user-2-line"></i></span>
+                            <span class="sidebar--item">Add New User</span>
                         </a>
                     </li>
-                </ul>
-                <ul class="sidebar--bottom-items">
+                    
                     <li>
-                        <a href="./view.html">
-                            <span class="icon icon-8"><i class="ri-eye-line"></i></span>
-                            <span class="sidebar--item">View All Users</span>
+                        <a href="./viewAllUsers.html">
+                            <span class="icon icon-1"><i class="ri-eye-line"></i></span>
+                            <span class="sidebar--item">View Users</span>
                         </a>
-                    </li>
+                    </li>                    
                 </ul>
+
             </div>
             <div class="main--content">
                 <div class="overview">
@@ -91,16 +112,30 @@ and open the template in the editor.
                         </div>
                     </div>
                 </div>
+                <br>
+                <br>
+
+                <div class="main-container">
+                    <div class="chart-div" style=" height:400px; width: 45vw">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div class="chart-div" style=" height:400px; width: 25vw">
+                        <canvas id="myChartPie2"></canvas>
+                    </div>     
+                </div>
+
+
+
 
                 <div class="recent--usera">
                     <div class="title">
                         <h2 class="section--title">Recent Records</h2>
-                        <a href="./index.html" class="add"><i class="ri-add-line"></i>Add New User</a>
                     </div>
                     <div class="table">
                         <table>
                             <thead>
                                 <tr>
+                                    <th style="width:30px">ID</th>
                                     <th>Full Name</th>
                                     <th>Address</th>
                                     <th>Nationality</th>
@@ -126,6 +161,88 @@ and open the template in the editor.
 
         <script>
 
+            var sinhalaCount = 0;
+            var tamilCount = 0;
+            var englishCount = 0;
+
+            deriveNationalityCounts();
+
+            function deriveNationalityCounts() {
+                var derivedNationalityData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nationality-data",
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "7777",
+                                method: "getNationalityData",
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(function (response) {
+                            return response.json()
+                        })
+
+                derivedNationalityData.then(result => {
+                    console.log(result)
+
+                    var derivedSinhalaCount = result.nationalityCounts.sinhalaCount;
+                    var derivedTamilCount = result.nationalityCounts.tamilCount;
+                    var derivedEnglishCount = result.nationalityCounts.englishCount;
+
+
+                    console.log(derivedSinhalaCount);
+                    console.log(derivedTamilCount);
+                    console.log(derivedEnglishCount);
+
+                    sinhalaCount = derivedSinhalaCount;
+                    tamilCount = derivedTamilCount;
+                    englishCount = derivedEnglishCount;
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Sinhala', 'Tamil', 'English'],
+                            datasets: [{
+                                    label: '',
+                                    data: [sinhalaCount, tamilCount, englishCount],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Users count against nationality"
+                                },
+                                legend: {
+                                    display: false
+                                }
+                            }
+
+                        },
+
+                    });
+
+                })
+            }
+
             deriveGenderCounts();
 
             function deriveGenderCounts() {
@@ -145,6 +262,7 @@ and open the template in the editor.
                         })
 
                 derivedGenderData.then(result => {
+                    console.log("result here")
                     console.log(result)
 
                     var derivedMaleCount = result.genderCounts.maleUsersCount;
@@ -155,6 +273,46 @@ and open the template in the editor.
                     document.getElementById("maleUserCount").innerHTML = derivedMaleCount;
                     document.getElementById("femaleUserCount").innerHTML = derivedFemaleCount;
                     document.getElementById("deleteUserCount").innerHTML = derivedDeletedCount;
+
+
+                    const ctx2 = document.getElementById('myChartPie2').getContext('2d');
+                    const myChart2 = new Chart(ctx2, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Male', 'Female'],
+                            datasets: [{
+                                    label: '',
+                                    data: [derivedMaleCount, derivedFemaleCount],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Users count against nationality"
+                                },
+                                legend: {
+                                    display: false
+                                }
+                            }
+
+                        },
+
+                    });
                 });
 
             }
@@ -186,9 +344,10 @@ and open the template in the editor.
                 count = data.users.length;
                 dataset = data;
 
-                for (var i = 0; i < count; i++) {
+                for (var i = 0; i < 13; i++) {
                     tableContent = tableContent +
                             "<tr>" +
+                            "<td>" + data.users[i].id + "</td>" +
                             "<td>" + data.users[i].fullname + "</td>" +
                             "<td>" + data.users[i].address + "</td>" +
                             "<td>" + data.users[i].nationality + "</td>" +
@@ -202,9 +361,9 @@ and open the template in the editor.
                 }
 
                 document.getElementById("table_body").innerHTML = tableContent;
-                
-                
-                
+
+
+
                 //// jQuery Functions
 
                 $(function () {
