@@ -17,6 +17,13 @@ and open the template in the editor.
                 flex-direction: row;
                 justify-content:space-around;
             }
+            .chart-div{
+                background: rgb(241 210 67 / 10%);
+                border: 1px solid #DECCB2;
+                border-radius: 20px;
+                /*margin: 20px;*/
+                padding: 20px;
+            }
         </style>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
@@ -98,33 +105,19 @@ and open the template in the editor.
                             </div>
                         </div>
                     </div>
+                    <br><br>
 
-                    <div class="title">
-                        <h1>Users Against Nationality</h1>
-                    </div>
                     <div class="main-container">
-                        <div style=" height:45vh; width: 40vw">
+                        <div class="chart-div" style=" height:52vh; width: 45vw">
                             <canvas id="myChart"></canvas>
                         </div>
-                        <div style=" height:30vh; width: 20vw">
-                            <canvas id="myChartPie"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="title">
-                        <h1>Users Against Gender</h1>
-                    </div>
-                    <div class="main-container">
-                        <div style=" height:45vh; width: 40vw">
-                            <canvas id="myChart2"></canvas>
-                        </div>
-                        <div style=" height:30vh; width: 20vw">
+                        <div class="chart-div" style=" height:52vh; width: 25vw">
                             <canvas id="myChartPie2"></canvas>
-                        </div>
+                        </div>     
                     </div>
-                    
-                    
+
                 </div>
+
             </div>
 
 
@@ -132,8 +125,8 @@ and open the template in the editor.
         <script src="assets/js/main.js"></script>
 
         <script>
-            
-            
+
+
             var sinhalaCount = 0;
             var tamilCount = 0;
             var englishCount = 0;
@@ -199,49 +192,16 @@ and open the template in the editor.
                                     beginAtZero: true
                                 }
                             },
-                            plugins:{
-                                title:{
+                            plugins: {
+                                title: {
                                     display: true,
                                     text: "Users count against nationality"
                                 },
-                                legend:{
+                                legend: {
                                     display: false
                                 }
                             }
-                            
-                        },
 
-                    });
-
-
-                    //////
-                    const ctx2 = document.getElementById('myChartPie').getContext('2d');
-                    const myChart2 = new Chart(ctx2, {
-                        type: 'pie',
-                        data: {
-                            labels: ['Sinhala', 'Tamil', 'English'],
-                            datasets: [{
-                                    label: '# of Votes',
-                                    data: [sinhalaCount, tamilCount, englishCount],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.2)',
-                                        'rgba(54, 162, 235, 0.2)',
-                                        'rgba(255, 159, 64, 0.2)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
                         },
 
                     });
@@ -279,49 +239,7 @@ and open the template in the editor.
                     document.getElementById("maleUserCount").innerHTML = derivedMaleCount;
                     document.getElementById("femaleUserCount").innerHTML = derivedFemaleCount;
                     document.getElementById("deleteUserCount").innerHTML = derivedDeletedCount;
-                    
-                    
-                    const ctx = document.getElementById('myChart2').getContext('2d');
-                    const myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Male', 'Female'],
-                            datasets: [{
-                                    label: '',
-                                    data: [derivedMaleCount, derivedFemaleCount],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 0.2)',
-                                        'rgba(255, 159, 64, 0.2)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(255, 159, 64, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            },
-                            plugins:{
-                                title:{
-                                    display: true,
-                                    text: "Users count against gender"
-                                },
-                                legend:{
-                                    display: false
-                                }
-                            }
-                            
-                        },
 
-                    });
-
-
-                    //////
                     const ctx2 = document.getElementById('myChartPie2').getContext('2d');
                     const myChart2 = new Chart(ctx2, {
                         type: 'pie',
@@ -346,17 +264,27 @@ and open the template in the editor.
                                 y: {
                                     beginAtZero: true
                                 }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Users count against nationality"
+                                },
+                                legend: {
+                                    display: false
+                                }
                             }
+
                         },
 
                     });
-                    
-                    
+
+
                 });
 
             }
-            
-           
+
+
 
         </script>
     </body>

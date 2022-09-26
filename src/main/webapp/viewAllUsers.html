@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
+        <style>
+            .main-container{
+                display: flex;
+                flex-direction: row;
+                justify-content:space-around;
+            }
+            .chart-div{
+                background: rgb(241 210 67 / 10%);
+                border: 1px solid #DECCB2;
+                border-radius: 20px;
+                /*margin: 20px;*/
+                padding: 20px;
+            }
+            td>span>i{
+                cursor: pointer;
+            }
+        </style>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+        <title>View All</title>
+
+    </head>
+    <body>
+        <section class="header">
+            <div class="logo">
+                <i class="ri-menu-line icon icon-0 menu"></i>
+                <h2>mobi<span>O</span>s</h2>
+            </div>
+        </section>
+        <section class="main">
+            <div class="sidebar">
+                <ul class="sidebar--items">
+                    <li>
+                        <a href="./dashboard.html">
+                            <span class="icon icon-1"><i class="ri-layout-grid-line"></i></span>
+                            <span class="sidebar--item">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="./addNewUser.html">
+                            <span class="icon icon-1"><i class="ri-user-2-line"></i></span>
+                            <span class="sidebar--item">Add New User</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" id="active--link">
+                            <span class="icon icon-1"><i class="ri-eye-line"></i></span>
+                            <span class="sidebar--item">View Users</span>
+                        </a>
+                    </li>
+
+                </ul>
+             
+            </div>
+
+            <div class="main--content">
+                <div class="overview">
+                    <div class="title">
+                    </div>
+                </div>
+
+                <div class="recent--usera">
+                    <div class="title">
+                        <h2 class="section--title">User Details</h2>
+                    </div>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Address</th>
+                                    <th>Nationality</th>
+                                    <th>NIC</th>
+                                    <th>Birthdate</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Last Update</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <ol id="numbers"></ol>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <script src="assets/js/main.js"></script>
+
+        <script>
+
+            function passEditId(id) {
+
+                swal({
+                    title: "Do you want to edit this?",
+                    icon: "warning",
+                    buttons: {
+                        cancelBtn: {
+                            text: "Cancel"
+                        },
+                        yesBtn: {
+                            text: "Yes",
+                            value: "yes"
+                        }
+                    },
+                    dangerMode: true,
+                })
+                        .then((value) => {
+                            if (value == "yes") {
+                                localStorage.setItem("edit_id", id);
+                                document.location.replace('./editUser.html');
+                            } else {
+
+                            }
+                        });
+
+
+                return false;
+            }
+
+
+            const api_url_delete = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-delete-user";
+
+
+            function deleteMsgBox(userId) {
+                swal({
+                    title: "Do you want to delete?",
+                    icon: "warning",
+                    buttons: {
+                        cancelBtn: {
+                            text: "Cancel"
+                        },
+                        yesBtn: {
+                            text: "Yes",
+                            value: "yes"
+                        }
+                    },
+                    dangerMode: true,
+                })
+                        .then((value) => {
+                            if (value == "yes") {
+                                deleteUser(userId)
+                            } else {
+
+                            }
+                        });
+            }
+
+            async function deleteUser(userId) {
+
+                console.log("delete user called" + userId)
+                const response = await fetch(api_url_delete,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "5555",
+                                method: "deleteUser",
+                                id: userId
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                location.reload();
+            }
+
+            const api_url_view = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-all-users";
+
+            var count;
+            var tableContent = "";
+
+            async function getAllUsers() {
+                const response = await fetch(api_url_view,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "3333",
+                                method: "getAllUsers"
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        }
+                );
+                const data = await response.json();
+
+                console.log(data);
+
+                console.log("Array size is " + data.users.length);
+
+                count = data.users.length;
+                dataset = data;
+                
+                data.users = data.users.reverse();
+
+                for (var i = 0; i < count; i++) {
+                    tableContent = tableContent +
+                            "<tr>" +
+                            "<td style='width:30px'>" + data.users[i].id + "</td>" +
+                            "<td>" + data.users[i].fullname + "</td>" +
+                            "<td>" + data.users[i].address + "</td>" +
+                            "<td>" + data.users[i].nationality + "</td>" +
+                            "<td>" + data.users[i].nic + "</td>" +
+                            "<td>" + data.users[i].birthdate + "</td>" +
+                            "<td>" + data.users[i].age + "</td>" +
+                            "<td>" + data.users[i].gender + "</td>" +
+                            "<td>" + data.users[i].lastUpdate + "</td>" +
+                            "<td><span><i onClick='passEditId(" + data.users[i].id + ")' class='ri-edit-line edit'></i><i onClick='deleteMsgBox(" + data.users[i].id + ")' class='ri-delete-bin-line delete'></i></span></td>" +
+                            "</tr>"
+                            ;
+                }
+
+                document.getElementById("table_body").innerHTML = tableContent;
+
+
+
+                //// jQuery Functions
+
+                $(function () {
+                    const rowsPerPage = 10;
+                    const rows = $('#table_body tr');
+                    const rowsCount = rows.length;
+                    const pageCount = Math.ceil(rowsCount / rowsPerPage); // avoid decimals
+                    const numbers = $('#numbers');
+
+
+                    console.log("page count is " + pageCount);
+                    console.log(rows);
+
+                    // Generate the pagination.
+                    for (var i = 0; i < pageCount; i++) {
+                        numbers.append('<li><a href="#">' + (i + 1) + '</a></li>');
+                    }
+
+                    // Mark the first page link as active.
+                    $('#numbers li:first-child a').addClass('active');
+
+                    // Display the first set of rows.
+                    displayRows(1);
+
+                    // On pagination click.
+                    $('#numbers li a').click(function (e) {
+                        var $this = $(this);
+
+                        e.preventDefault();
+
+                        // Remove the active class from the links.
+                        $('#numbers li a').removeClass('active');
+
+                        // Add the active class to the current link.
+                        $this.addClass('active');
+
+                        // Show the rows corresponding to the clicked page ID.
+                        displayRows($this.text());
+                    });
+
+                    // Function that displays rows for a specific page.
+                    function displayRows(index) {
+                        var start = (index - 1) * rowsPerPage;
+                        var end = start + rowsPerPage;
+
+                        // Hide all rows.
+                        rows.hide();
+
+                        // Show the proper rows for this page.
+                        rows.slice(start, end).show();
+                    }
+                });
+
+            }
+
+            getAllUsers();
+
+
+
+        </script>
+
+        <script>
+
+        </script>
+    </body>
+</html>

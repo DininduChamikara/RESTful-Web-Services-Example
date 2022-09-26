@@ -470,6 +470,11 @@ table {
     border-collapse: collapse;
 }
 
+.table{
+    /*height: 250px;*/
+    /*overflow-y: scroll;*/
+}
+
 tr {
     border-bottom: 1px solid #f1f1f1;
 }
