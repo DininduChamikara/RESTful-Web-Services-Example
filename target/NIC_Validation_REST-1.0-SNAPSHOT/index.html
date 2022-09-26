@@ -1,130 +1,186 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
     <head>
-        <title>Registration Form</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
         <style>
-            h1{
-                text-align: center;
+            .main-container{
+                display: flex;
+                flex-direction: row;
+                justify-content:space-around;
             }
-
-            .invisibleNic{
-                display: none;
-            }
-
-            .register-container{
-                border: 2px solid cyan;
+            .chart-div{
+                background: rgb(241 210 67 / 10%);
+                border: 1px solid #DECCB2;
                 border-radius: 20px;
-                margin: 30px;
-                padding: 30px;
-                display: block;
-            }
-
-            .register-container>form{
-                border: 1px solid blue;
+                /*margin: 20px;*/
                 padding: 20px;
-                border-radius: 20px;
-                margin-top: 20px;
-                /*                margin: 20px;*/
             }
-            #error{
-                color: red;
-            }
-            a{
-                margin-left: 5px;
-            }
-
         </style>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+
+        <title>Dashboard</title>
+
     </head>
     <body>
-        <h1>Register Form</h1>
+        <section class="header">
+            <div class="logo">
+                <i class="ri-menu-line icon icon-0 menu"></i>
+                <h2>mobi<span>O</span>s</h2>
+            </div>
+        </section>
+        <section class="main">
+            <div class="sidebar">
+                <ul class="sidebar--items">
+                    <li>
+                        <a href="#" id="active--link">
+                            <span class="icon icon-1"><i class="ri-layout-grid-line"></i></span>
+                            <span class="sidebar--item">Dashboard</span>
+                        </a>
+                    </li>
 
-        <div class="register-container">
-            <a class="btn btn-primary" style="float:right" href="view.html">View All Users</a>
-            <a class="btn btn-primary" style="float:right" href="dashboard.html">Dashboard</a>
-            <br><br>
+                    <li>
+                        <a href="./addNewUser.html">
+                            <span class="icon icon-1"><i class="ri-user-2-line"></i></span>
+                            <span class="sidebar--item">Add New User</span>
+                        </a>
+                    </li>
 
-            <!--NIC data validation-->
-            <form action="" method="post" id="formNicData">
-                <div class="form-group">
-                    <label for="nic">NIC number</label>
-                    <input type="text" class="form-control" id="nicNum" name="nicNum" placeholder="Enter the NIC" required>
-                    <small id="error" class="form-text text-muted"></small>
+                    <li>
+                        <a href="./viewAllUsers.html">
+                            <span class="icon icon-1"><i class="ri-eye-line"></i></span>
+                            <span class="sidebar--item">View Users</span>
+                        </a>
+                    </li>                    
+                </ul>
+
+            </div>
+            <div class="main--content">
+                <div class="overview">
+                    <div class="title">
+
+                    </div>
+                    <div class="cards">
+                        <div class="card card-1">
+                            <div class="card--data">
+                                <div class="card--content">
+                                    <h5 class="card--title">Total Users</h5>
+                                    <h1 id="totleUserCount"></h1>
+                                </div>
+                                <i class="ri-user-2-line card--icon--lg"></i>
+                            </div>
+                        </div>
+                        <div class="card card-2">
+                            <div class="card--data">
+                                <div class="card--content">
+                                    <h5 class="card--title">Male Users</h5>
+                                    <h1 id="maleUserCount"></h1>
+                                </div>
+                                <i class="ri-men-line card--icon--lg"></i>
+                            </div>
+                        </div>
+                        <div class="card card-3">
+                            <div class="card--data">
+                                <div class="card--content">
+                                    <h5 class="card--title">Female Users</h5>
+                                    <h1 id="femaleUserCount"></h1>
+                                </div>
+                                <i class="ri-women-line card--icon--lg"></i>
+                            </div>
+                        </div>
+                        <div class="card card-4">
+                            <div class="card--data">
+                                <div class="card--content">
+                                    <h5 class="card--title">Deleted Users</h5>
+                                    <h1 id="deleteUserCount"></h1>
+                                </div>
+                                <i class="ri-chat-delete-line card--icon--lg"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Try NIC</button>
-            </form>
+                <br>
+                <br>
 
-
-            <!--Form Data Field-->
-            <form action="view.html" method="post" id="form">
-
-                <div class="form-group">
-                    <label for="nic_num">NIC number</label>
-                    <input type="text" class="form-control" name="nicNumber" id="nic" required>
+                <div class="main-container">
+                    <div class="chart-div" style=" width: 45vw">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div class="chart-div" style=" width: 25vw">
+                        <canvas id="myChartPie2"></canvas>
+                    </div>     
+                </div>
+                <br>
+                <div class="main-container">
+                    <div class="chart-div" style=" width: 72vw">
+                        <canvas id="myChartBar2"></canvas>
+                    </div>   
                 </div>
 
-                <div class="form-group">
-                    <label for="birthdate">Birth Date</label>
-                    <input type="text" class="form-control" name="birthdate" id="birthdate" required>
+
+
+
+                <div class="recent--usera">
+                    <div class="title">
+                        <h2 class="section--title">Recent Records</h2>
+                    </div>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width:30px">ID</th>
+                                    <th>Full Name</th>
+                                    <th>Address</th>
+                                    <th>Nationality</th>
+                                    <th>NIC</th>
+                                    <th>Birthdate</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Last Update</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <ol id="numbers"></ol>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="age">Age</label>
-                    <input type="number" class="form-control" name="age" id="age" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <input type="text" class="form-control" name="gender" id="gender" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="fullname">Full Name</label>
-                    <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Enter full name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="nationality">Nationality</label>
-                    <select class="form-control" name="nationality" id="nationality">
-                        <option value="sinhala">Sinhala</option>
-                        <option value="tamil">Tamil</option>
-                        <option value="english">English</option>
-                    </select>
-                </div>
-                <br><br>
-
-                <button type="submit" class="btn btn-primary">Register</button>
-            </form>
-
-        </div>
+            </div>
+        </section>
+        <script src="assets/js/main.js"></script>
 
         <script>
 
-            var formNicData = document.getElementById('formNicData')
-            var form = document.getElementById('form')
+            var sinhalaCount = 0;
+            var tamilCount = 0;
+            var englishCount = 0;
 
-            formNicData.addEventListener('submit', function (e) {
-                console.log("event listner working for try nic")
+            deriveNationalityCounts();
+            derivedAgeGroupsData();
 
-                e.preventDefault();
-                var nicNum = document.getElementById('nicNum').value
-
-                // fetch post request
-                var derivedData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nic-genarate",
+            function derivedAgeGroupsData() {
+                var derivedAgeGroupData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-age-groups",
                         {
                             method: 'POST',
                             body: JSON.stringify({
-                                requestId: "4444",
-                                method: "searchUser",
-                                nicNum: nicNum
+                                requestId: "8888",
+                                method: "getAgeGroupData",
                             }),
                             headers: {
                                 "Content-type": "application/json; charset=UTF-8"
@@ -134,105 +190,337 @@
                             return response.json()
                         })
 
-                derivedData.then(result => {
+                derivedAgeGroupData.then(result => {
+                    console.log("Derived age group data here")
+                    console.log(result)
+                    
+                    let labal_1 = result.ageGroups[0].ageGroup;
+                    let count_1 = result.ageGroups[0].count;
+                    
+                    let labal_2 = result.ageGroups[1].ageGroup;
+                    let count_2 = result.ageGroups[1].count;
+                    
+                    let labal_3 = result.ageGroups[2].ageGroup;
+                    let count_3 = result.ageGroups[2].count;
+                    
+                    let labal_4 = result.ageGroups[3].ageGroup;
+                    let count_4 = result.ageGroups[3].count;
+                    
+                    let labal_5 = result.ageGroups[4].ageGroup;
+                    let count_5 = result.ageGroups[4].count;
+                    
+                    let labal_6 = result.ageGroups[5].ageGroup;
+                    let count_6 = result.ageGroups[5].count;
+                    
+                    let labal_7 = result.ageGroups[6].ageGroup;
+                    let count_7 = result.ageGroups[6].count;
+                    
+                    let labal_8 = result.ageGroups[7].ageGroup;
+                    let count_8 = result.ageGroups[7].count;
+                    
+                    let labal_9 = result.ageGroups[8].ageGroup;
+                    let count_9 = result.ageGroups[8].count;
+                    
+                    const ctx = document.getElementById('myChartBar2').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [labal_1, labal_2, labal_3, labal_4, labal_5, labal_6, labal_7, labal_8, labal_9],
+                            datasets: [{
+                                    label: '',
+                                    data: [count_1, count_2, count_3, count_4, count_5, count_6, count_7, count_8, count_9],
+                                    backgroundColor: [
+                                        'rgba(54, 162, 235, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(54, 162, 235, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Users count against age gaps"
+                                },
+                                legend: {
+                                    display: false
+                                }
+                            }
+
+                        },
+
+                    });
+                })
+
+            }
+
+            function deriveNationalityCounts() {
+                var derivedNationalityData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nationality-data",
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "7777",
+                                method: "getNationalityData",
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(function (response) {
+                            return response.json()
+                        })
+
+                derivedNationalityData.then(result => {
                     console.log(result)
 
-                    var derivedNic = result.nicInfo.nic;
-                    var derivedBirthdate = result.nicInfo.birthdate;
-                    var derivedAge = result.nicInfo.age;
-                    var derivedGender = result.nicInfo.gender;
-                    var derivedErrMsg = result.nicInfo.errMsg;
+                    var derivedSinhalaCount = result.nationalityCounts.sinhalaCount;
+                    var derivedTamilCount = result.nationalityCounts.tamilCount;
+                    var derivedEnglishCount = result.nationalityCounts.englishCount;
 
-                    console.log("Error msg is " + derivedErrMsg);
 
-                    if (derivedErrMsg == "") {
-                        //Alert box
-                        swal("Good job!", "NIC data retrieved successfully!", "success");
+                    console.log(derivedSinhalaCount);
+                    console.log(derivedTamilCount);
+                    console.log(derivedEnglishCount);
 
+                    sinhalaCount = derivedSinhalaCount;
+                    tamilCount = derivedTamilCount;
+                    englishCount = derivedEnglishCount;
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Sinhala', 'Tamil', 'English'],
+                            datasets: [{
+                                    label: '',
+                                    data: [sinhalaCount, tamilCount, englishCount],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Users count against nationality"
+                                },
+                                legend: {
+                                    display: false
+                                }
+                            }
+
+                        },
+
+                    });
+
+                })
+            }
+
+            deriveGenderCounts();
+
+            function deriveGenderCounts() {
+                var derivedGenderData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-gender-data",
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "8888",
+                                method: "getGenderData",
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(function (response) {
+                            return response.json()
+                        })
+
+                derivedGenderData.then(result => {
+                    console.log("result here")
+                    console.log(result)
+
+                    var derivedMaleCount = result.genderCounts.maleUsersCount;
+                    var derivedFemaleCount = result.genderCounts.femaleUsersCount;
+                    var derivedDeletedCount = result.genderCounts.deletedUserCount;
+
+                    document.getElementById("totleUserCount").innerHTML = derivedMaleCount + derivedFemaleCount;
+                    document.getElementById("maleUserCount").innerHTML = derivedMaleCount;
+                    document.getElementById("femaleUserCount").innerHTML = derivedFemaleCount;
+                    document.getElementById("deleteUserCount").innerHTML = derivedDeletedCount;
+
+
+                    const ctx2 = document.getElementById('myChartPie2').getContext('2d');
+                    const myChart2 = new Chart(ctx2, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Male', 'Female'],
+                            datasets: [{
+                                    label: '',
+                                    data: [derivedMaleCount, derivedFemaleCount],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(255, 99, 132, 1)',
+                                        'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: "Users count against nationality"
+                                },
+                                legend: {
+                                    display: false
+                                }
+                            }
+
+                        },
+
+                    });
+                });
+
+            }
+
+            const api_url_view = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-all-users";
+
+            var count;
+            var tableContent = "";
+
+            async function getAllUsers() {
+                const response = await fetch(api_url_view,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "3333",
+                                method: "getAllUsers"
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        }
+                );
+                const data = await response.json();
+
+                console.log(data);
+
+                console.log("Array size is " + data.users.length);
+
+                count = data.users.length;
+                dataset = data;
+                
+                data.users = data.users.reverse();
+
+                for (var i = 0; i < 15; i++) {
+                    tableContent = tableContent +
+                            "<tr>" +
+                            "<td>" + data.users[i].id + "</td>" +
+                            "<td>" + data.users[i].fullname + "</td>" +
+                            "<td>" + data.users[i].address + "</td>" +
+                            "<td>" + data.users[i].nationality + "</td>" +
+                            "<td>" + data.users[i].nic + "</td>" +
+                            "<td>" + data.users[i].birthdate + "</td>" +
+                            "<td>" + data.users[i].age + "</td>" +
+                            "<td>" + data.users[i].gender + "</td>" +
+                            "<td>" + data.users[i].lastUpdate + "</td>" +
+                            "</tr>"
+                            ;
+                }
+
+                document.getElementById("table_body").innerHTML = tableContent;
+
+
+
+                //// jQuery Functions
+
+                $(function () {
+                    const rowsPerPage = 5;
+                    const rows = $('#table_body tr');
+                    const rowsCount = rows.length;
+                    const pageCount = Math.ceil(rowsCount / rowsPerPage); // avoid decimals
+                    const numbers = $('#numbers');
+
+
+                    console.log("page count is " + pageCount);
+                    console.log(rows);
+
+                    // Generate the pagination.
+                    for (var i = 0; i < pageCount; i++) {
+                        numbers.append('<li><a href="#">' + (i + 1) + '</a></li>');
                     }
 
-                    document.getElementById('nic').value = derivedNic;
-                    document.getElementById('birthdate').value = derivedBirthdate;
-                    document.getElementById('age').value = derivedAge;
-                    document.getElementById('gender').value = derivedGender;
-                    document.getElementById('error').innerHTML = derivedErrMsg;
-                })
+                    // Mark the first page link as active.
+                    $('#numbers li:first-child a').addClass('active');
+
+                    // Display the first set of rows.
+                    displayRows(1);
+
+                    // On pagination click.
+                    $('#numbers li a').click(function (e) {
+                        var $this = $(this);
+
+                        e.preventDefault();
+
+                        // Remove the active class from the links.
+                        $('#numbers li a').removeClass('active');
+
+                        // Add the active class to the current link.
+                        $this.addClass('active');
+
+                        // Show the rows corresponding to the clicked page ID.
+                        displayRows($this.text());
+                    });
+
+                    // Function that displays rows for a specific page.
+                    function displayRows(index) {
+                        var start = (index - 1) * rowsPerPage;
+                        var end = start + rowsPerPage;
+
+                        // Hide all rows.
+                        rows.hide();
+
+                        // Show the proper rows for this page.
+                        rows.slice(start, end).show();
+                    }
+                });
+
+            }
+
+            getAllUsers();
 
 
+        </script>
 
-            })
-
-            form.addEventListener('submit', function (e) {
-                // auto submission of the form
-
-                console.log("event listner working")
-                e.preventDefault();
-
-                var fullname = document.getElementById('fullname').value
-                var address = document.getElementById('address').value
-                var nationality = document.getElementById('nationality').value
-                var nic = document.getElementById('nic').value
-                var birthdate = document.getElementById('birthdate').value
-                var age = document.getElementById('age').value
-                var gender = document.getElementById('gender').value
-
-                swal({
-                    title: "Do you want to continue?",
-                    icon: "warning",
-                    buttons: {
-                        cancelBtn: {
-                            text: "Cancel"
-                        },
-                        yesBtn: {
-                            text: "Yes",
-                            value: "yes"
-                        }
-                    },
-                    dangerMode: true,
-                })
-                        .then((value) => {
-                            if (value == "yes") {
-
-                                // fetch post request
-                                fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-save-user",
-                                        {
-                                            method: 'POST',
-                                            body: JSON.stringify({
-                                                requestId: "1111",
-                                                method: "saveUser",
-                                                user: {
-                                                    fullname: fullname,
-                                                    address: address,
-                                                    nationality: nationality,
-                                                    nic: nic,
-                                                    birthdate: birthdate,
-                                                    age: age,
-                                                    gender: gender
-                                                }
-
-                                            }),
-                                            headers: {
-                                                "Content-type": "application/json; charset=UTF-8"
-                                            }
-                                        }
-                                )
-
-                                swal({
-                                    title: "Good job!",
-                                    text: "New user successfully registered!",
-                                    icon: "success"
-                                })
-                                        .then((added) => {
-                                            if (added) {
-                                                document.location.replace('./view.html');
-                                            }
-                                        });
-
-                            } else {
-
-                            }
-                        });
-            })
+        <script>
 
         </script>
     </body>

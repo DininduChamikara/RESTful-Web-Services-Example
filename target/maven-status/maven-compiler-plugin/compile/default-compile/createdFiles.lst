@@ -4,5 +4,6 @@ Utilities\DBconnection.class
 Model\NationalityCount.class
 Model\User.class
 com\mycompany\nic_validation_rest\resources\JavaEE8Resource.class
+Model\AgeGroup.class
 Model\Nic.class
 Model\UsersCount.class
