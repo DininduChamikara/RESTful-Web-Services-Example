@@ -267,7 +267,6 @@ public class User {
 
     public static void deleteUserData(User user) {
 
-
         try {
 
             String id = user.getId();
@@ -277,7 +276,6 @@ public class User {
             Connection con;
             con = DBconnection.createConnection();
 
-//            String sql = "DELETE FROM nic_register.users_new WHERE id=?";
             String sql = "UPDATE nic_register.users_new SET activeState='0' WHERE id=?";
 
             PreparedStatement ps = con.prepareStatement(sql);

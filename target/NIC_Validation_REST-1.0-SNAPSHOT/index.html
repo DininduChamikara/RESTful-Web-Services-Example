@@ -10,27 +10,10 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/styles.css">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-
+        <link rel="stylesheet" href="assets/css/styles_new.css">
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-        <style>
-            .main-container{
-                display: flex;
-                flex-direction: row;
-                justify-content:space-around;
-            }
-            .chart-div{
-                background: rgb(241 210 67 / 10%);
-                border: 1px solid #DECCB2;
-                border-radius: 20px;
-                /*margin: 20px;*/
-                padding: 20px;
-            }
-        </style>
-
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
 
         <title>Dashboard</title>
 
@@ -70,62 +53,74 @@ and open the template in the editor.
             </div>
             <div class="main--content">
                 <div class="overview">
-                    <div class="title">
+                    <br><br>
+                    <div class="main-container">
+                        <div class="cards">
+                            <div class="card card-1">
+                                <div class="card--data">
+                                    <div class="card--content">
+                                        <h5 class="card--title">Total Users</h5>
+                                        <h1 id="totleUserCount"></h1>
+                                    </div>
+                                    <i class="ri-user-2-line card--icon--lg"></i>
+                                </div>
+                            </div>
+                            <div class="card card-2">
+                                <div class="card--data">
+                                    <div class="card--content">
+                                        <h5 class="card--title">Male Users</h5>
+                                        <h1 id="maleUserCount"></h1>
+                                    </div>
+                                    <i class="ri-men-line card--icon--lg"></i>
+                                </div>
+                            </div>
+                            <div class="card card-3">
+                                <div class="card--data">
+                                    <div class="card--content">
+                                        <h5 class="card--title">Female Users</h5>
+                                        <h1 id="femaleUserCount"></h1>
+                                    </div>
+                                    <i class="ri-women-line card--icon--lg"></i>
+                                </div>
+                            </div>
+                            <div class="card card-4">
+                                <div class="card--data">
+                                    <div class="card--content">
+                                        <h5 class="card--title">Deleted Users</h5>
+                                        <h1 id="deleteUserCount"></h1>
+                                    </div>
+                                    <i class="ri-chat-delete-line card--icon--lg"></i>
+                                </div>
+                            </div>
 
-                    </div>
-                    <div class="cards">
-                        <div class="card card-1">
-                            <div class="card--data">
-                                <div class="card--content">
-                                    <h5 class="card--title">Total Users</h5>
-                                    <h1 id="totleUserCount"></h1>
-                                </div>
-                                <i class="ri-user-2-line card--icon--lg"></i>
-                            </div>
-                        </div>
-                        <div class="card card-2">
-                            <div class="card--data">
-                                <div class="card--content">
-                                    <h5 class="card--title">Male Users</h5>
-                                    <h1 id="maleUserCount"></h1>
-                                </div>
-                                <i class="ri-men-line card--icon--lg"></i>
-                            </div>
-                        </div>
-                        <div class="card card-3">
-                            <div class="card--data">
-                                <div class="card--content">
-                                    <h5 class="card--title">Female Users</h5>
-                                    <h1 id="femaleUserCount"></h1>
-                                </div>
-                                <i class="ri-women-line card--icon--lg"></i>
-                            </div>
-                        </div>
-                        <div class="card card-4">
-                            <div class="card--data">
-                                <div class="card--content">
-                                    <h5 class="card--title">Deleted Users</h5>
-                                    <h1 id="deleteUserCount"></h1>
-                                </div>
-                                <i class="ri-chat-delete-line card--icon--lg"></i>
-                            </div>
                         </div>
                     </div>
+
                 </div>
                 <br>
-                <br>
-
+                <br><br>
+                <center>
+                    <h1>Data Visualization & Chart Representation</h1>
+                </center> 
+                <br><br>
                 <div class="main-container">
-                    <div class="chart-div" style=" width: 45vw">
-                        <canvas id="myChart"></canvas>
+                    <div style=" width: 65%">
+                        <div class="chart-div" style=" width: 99%">
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
-                    <div class="chart-div" style=" width: 25vw">
-                        <canvas id="myChartPie2"></canvas>
-                    </div>     
+
+                    <div style=" width: 35%">
+                        <div class="chart-div" style="margin-left:3%;  width: 97%;">
+                            <canvas id="myChartPie2"></canvas>
+                        </div> 
+                    </div>
+
+
                 </div>
                 <br>
                 <div class="main-container">
-                    <div class="chart-div" style=" width: 72vw">
+                    <div class="chart-div" style=" width: 100%">
                         <canvas id="myChartBar2"></canvas>
                     </div>   
                 </div>
@@ -142,8 +137,8 @@ and open the template in the editor.
                             <thead>
                                 <tr>
                                     <th style="width:30px">ID</th>
-                                    <th>Full Name</th>
-                                    <th>Address</th>
+                                    <th style="width:180px">Full Name</th>
+                                    <th style="width:200px">Address</th>
                                     <th>Nationality</th>
                                     <th>NIC</th>
                                     <th>Birthdate</th>
@@ -167,11 +162,12 @@ and open the template in the editor.
 
         <script>
 
+            // to get age group data //
+
             var sinhalaCount = 0;
             var tamilCount = 0;
             var englishCount = 0;
 
-            deriveNationalityCounts();
             derivedAgeGroupsData();
 
             function derivedAgeGroupsData() {
@@ -193,34 +189,34 @@ and open the template in the editor.
                 derivedAgeGroupData.then(result => {
                     console.log("Derived age group data here")
                     console.log(result)
-                    
+
                     let labal_1 = result.ageGroups[0].ageGroup;
                     let count_1 = result.ageGroups[0].count;
-                    
+
                     let labal_2 = result.ageGroups[1].ageGroup;
                     let count_2 = result.ageGroups[1].count;
-                    
+
                     let labal_3 = result.ageGroups[2].ageGroup;
                     let count_3 = result.ageGroups[2].count;
-                    
+
                     let labal_4 = result.ageGroups[3].ageGroup;
                     let count_4 = result.ageGroups[3].count;
-                    
+
                     let labal_5 = result.ageGroups[4].ageGroup;
                     let count_5 = result.ageGroups[4].count;
-                    
+
                     let labal_6 = result.ageGroups[5].ageGroup;
                     let count_6 = result.ageGroups[5].count;
-                    
+
                     let labal_7 = result.ageGroups[6].ageGroup;
                     let count_7 = result.ageGroups[6].count;
-                    
+
                     let labal_8 = result.ageGroups[7].ageGroup;
                     let count_8 = result.ageGroups[7].count;
-                    
+
                     let labal_9 = result.ageGroups[8].ageGroup;
                     let count_9 = result.ageGroups[8].count;
-                    
+
                     const ctx = document.getElementById('myChartBar2').getContext('2d');
                     const myChart = new Chart(ctx, {
                         type: 'bar',
@@ -260,6 +256,11 @@ and open the template in the editor.
                 })
 
             }
+
+
+            // to get nationality data //
+
+            deriveNationalityCounts();
 
             function deriveNationalityCounts() {
                 var derivedNationalityData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nationality-data",
@@ -337,6 +338,9 @@ and open the template in the editor.
                 })
             }
 
+
+            // to get gender count data
+
             deriveGenderCounts();
 
             function deriveGenderCounts() {
@@ -411,6 +415,8 @@ and open the template in the editor.
 
             }
 
+            // to get all user data //
+
             const api_url_view = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-all-users";
 
             var count;
@@ -437,7 +443,7 @@ and open the template in the editor.
 
                 count = data.users.length;
                 dataset = data;
-                
+
                 data.users = data.users.reverse();
 
                 for (var i = 0; i < 15; i++) {

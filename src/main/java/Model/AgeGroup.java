@@ -52,8 +52,6 @@ public class AgeGroup {
                 ageGroup.setAgeGroup(i + " - " + (i+10));
                 ageGroup.setCount(result.getInt(1)); 
                 
-                System.out.println("The age group " + ageGroup.getAgeGroup() + " Count is " + ageGroup.getCount());
-                
                 ageGroups.add(ageGroup);
             }
             
