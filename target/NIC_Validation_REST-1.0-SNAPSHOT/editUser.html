@@ -5,70 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="assets/css/styles.css">
-
-
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/styles_new.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-        <style>
-            input[type=text], select {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-
-            input[type=number], select {
-                width: 100%;
-                padding: 12px 20px;
-                margin: 8px 0;
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-
-            input[type=submit] {
-                width: 100%;
-                background-color: #4CAF50;
-                color: white;
-                padding: 14px 20px;
-                margin: 8px 0;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-
-            input[type=submit]:hover {
-                background-color: #45a049;
-            }
-
-            div {
-                border-radius: 5px;
-                /*background-color: #f2f2f2;*/
-                padding: 0px;
-                padding: 0px;
-            }
-
-            form{
-                border: 1px solid black;
-                padding: 20px;
-                border-radius: 20px;
-            }
-
-            #error{
-                color: red;
-            }
-
-        </style>
-
-
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 
         <title>Edit User</title>
@@ -164,251 +105,184 @@
         </section>
         <script src="assets/js/main.js"></script>
 
+        <script>
+
+            var editId = localStorage.getItem("edit_id");
+            console.log("edit id is " + editId);
+            deriveDbData(editId);
+
+            function deriveDbData(editId) {
+                var derivedDataDB = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-retrieve-db",
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "6666",
+                                method: "getAllUsers",
+                                id: editId
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(function (response) {
+                            return response.json()
+                        })
+
+                derivedDataDB.then(result => {
+                    console.log(result)
+
+                    var derivedDbFullname = result.user.fullname;
+                    var derivedDbAddress = result.user.address;
+                    var derivedDbNationality = result.user.nationality;
+                    var derivedDbNic = result.user.nic;
+                    var derivedBirthdate = result.user.birthdate;
+                    var derivedAge = result.user.age;
+                    var derivedGender = result.user.gender;
+
+                    document.getElementById('nicNum').value = derivedDbNic;
+                    document.getElementById('fullname').value = derivedDbFullname;
+                    document.getElementById('address').value = derivedDbAddress;
+                    document.getElementById('nationality').value = derivedDbNationality;
+                    document.getElementById('nic').value = derivedDbNic;
+                    document.getElementById('birthdate').value = derivedBirthdate;
+                    document.getElementById('age').value = derivedAge;
+                    document.getElementById('gender').value = derivedGender;
 
 
-<!--        <h1>Edit User</h1>
-
-        <div class="register-container">
-            <a class="btn btn-primary" style="float:right" href="view.html">View All Users</a>
-            <br><br>
-
-            NIC data validation
-            <form action="" method="post" id="formNicData">
-                <div class="form-group">
-                    <label for="nic">NIC number</label>
-                    <input type="text" class="form-control" id="nicNum" name="nicNum" placeholder="Enter the NIC">
-                    <small id="error" class="form-text text-muted"></small>
-                </div>
-                <button type="submit" class="btn btn-primary">Try NIC</button>
-            </form>
+                })
+            }
 
 
-            Form Data Field
-            <form action="" method="post" id="form">
+            var formNicData = document.getElementById('formNicData')
+            var form = document.getElementById('form')
 
-                <div class="form-group">
-                    <label for="nic_num">NIC number</label>
-                    <input type="text" class="form-control" name="nicNumber" id="nic">
-                </div>
+            formNicData.addEventListener('submit', function (e) {
+                console.log("event listner working for try nic")
 
-                <div class="form-group">
-                    <label for="birthdate">Birth Date</label>
-                    <input type="text" class="form-control" name="birthdate" id="birthdate">
-                </div>
+                e.preventDefault();
+                var nicNum = document.getElementById('nicNum').value
 
-                <div class="form-group">
-                    <label for="age">Age</label>
-                    <input type="number" class="form-control" name="age" id="age" >
-                </div>
+                // fetch post request
+                var derivedData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nic-genarate",
+                        {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                requestId: "4444",
+                                method: "searchUser",
+                                nicNum: nicNum
+                            }),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                        .then(function (response) {
+                            return response.json()
+                        })
 
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <input type="text" class="form-control" name="gender" id="gender">
-                </div>
+                derivedData.then(result => {
+                    console.log(result)
 
-                <div class="form-group">
-                    <label for="fullname">Full Name</label>
-                    <input type="text" class="form-control" name="fullname" id="fullname" placeholder="Enter full name" >
-                </div>
+                    var derivedNic = result.nicInfo.nic;
+                    var derivedBirthdate = result.nicInfo.birthdate;
+                    var derivedAge = result.nicInfo.age;
+                    var derivedGender = result.nicInfo.gender;
+                    var derivedErrMsg = result.nicInfo.errMsg;
 
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" name="address" id="address" placeholder="Enter address" >
-                </div>
+                    document.getElementById('nic').value = derivedNic;
+                    document.getElementById('birthdate').value = derivedBirthdate;
+                    document.getElementById('age').value = derivedAge;
+                    document.getElementById('gender').value = derivedGender;
+                    document.getElementById('error').innerHTML = derivedErrMsg;
+                })
 
-                <div class="form-group">
-                    <label for="nationality">Nationality</label>
-                    <select class="form-control" name="nationality" id="nationality">
-                        <option value="sinhala">Sinhala</option>
-                        <option value="tamil">Tamil</option>
-                        <option value="english">English</option>
-                    </select>
-                </div>
-                <br><br>
+                if (derivedErrMsg == "") {
+                    //Alert box
+                    swal("Good job!", "NIC data retrieved successfully!", "success");
 
-                <button type="submit" class="btn btn-primary">Update</button>
-            </form>-->
-
-            <script>
-
-                var editId = localStorage.getItem("edit_id");
-                console.log("edit id is " + editId);
-                deriveDbData(editId);
-
-                function deriveDbData(editId) {
-                    var derivedDataDB = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-retrieve-db",
-                            {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    requestId: "6666",
-                                    method: "getAllUsers",
-                                    id: editId
-                                }),
-                                headers: {
-                                    "Content-type": "application/json; charset=UTF-8"
-                                }
-                            })
-                            .then(function (response) {
-                                return response.json()
-                            })
-
-                    derivedDataDB.then(result => {
-                        console.log(result)
-
-                        var derivedDbFullname = result.user.fullname;
-                        var derivedDbAddress = result.user.address;
-                        var derivedDbNationality = result.user.nationality;
-                        var derivedDbNic = result.user.nic;
-                        var derivedBirthdate = result.user.birthdate;
-                        var derivedAge = result.user.age;
-                        var derivedGender = result.user.gender;
-
-                        document.getElementById('nicNum').value = derivedDbNic;
-                        document.getElementById('fullname').value = derivedDbFullname;
-                        document.getElementById('address').value = derivedDbAddress;
-                        document.getElementById('nationality').value = derivedDbNationality;
-                        document.getElementById('nic').value = derivedDbNic;
-                        document.getElementById('birthdate').value = derivedBirthdate;
-                        document.getElementById('age').value = derivedAge;
-                        document.getElementById('gender').value = derivedGender;
-
-
-                    })
                 }
 
+            })
 
-                var formNicData = document.getElementById('formNicData')
-                var form = document.getElementById('form')
+            form.addEventListener('submit', function (e) {
+                // auto submission of the form
 
-                formNicData.addEventListener('submit', function (e) {
-                    console.log("event listner working for try nic")
+                console.log("event listner working")
+                e.preventDefault();
 
-                    e.preventDefault();
-                    var nicNum = document.getElementById('nicNum').value
+                var fullname = document.getElementById('fullname').value
+                var address = document.getElementById('address').value
+                var nationality = document.getElementById('nationality').value
+                var nic = document.getElementById('nic').value
+                var birthdate = document.getElementById('birthdate').value
+                var age = document.getElementById('age').value
+                var gender = document.getElementById('gender').value
 
-                    // fetch post request
-                    var derivedData = fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-nic-genarate",
-                            {
-                                method: 'POST',
-                                body: JSON.stringify({
-                                    requestId: "4444",
-                                    method: "searchUser",
-                                    nicNum: nicNum
-                                }),
-                                headers: {
-                                    "Content-type": "application/json; charset=UTF-8"
-                                }
-                            })
-                            .then(function (response) {
-                                return response.json()
-                            })
+                console.log("address is " + address);
 
-                    derivedData.then(result => {
-                        console.log(result)
-
-                        var derivedNic = result.nicInfo.nic;
-                        var derivedBirthdate = result.nicInfo.birthdate;
-                        var derivedAge = result.nicInfo.age;
-                        var derivedGender = result.nicInfo.gender;
-                        var derivedErrMsg = result.nicInfo.errMsg;
-
-                        document.getElementById('nic').value = derivedNic;
-                        document.getElementById('birthdate').value = derivedBirthdate;
-                        document.getElementById('age').value = derivedAge;
-                        document.getElementById('gender').value = derivedGender;
-                        document.getElementById('error').innerHTML = derivedErrMsg;
-                    })
-
-                    if (derivedErrMsg == "") {
-                        //Alert box
-                        swal("Good job!", "NIC data retrieved successfully!", "success");
-
-                    }
-
-                })
-
-                form.addEventListener('submit', function (e) {
-                    // auto submission of the form
-
-                    console.log("event listner working")
-                    e.preventDefault();
-
-                    var fullname = document.getElementById('fullname').value
-                    var address = document.getElementById('address').value
-                    var nationality = document.getElementById('nationality').value
-                    var nic = document.getElementById('nic').value
-                    var birthdate = document.getElementById('birthdate').value
-                    var age = document.getElementById('age').value
-                    var gender = document.getElementById('gender').value
-
-                    console.log("address is " + address);
-
-                    swal({
-                        title: "Do you want to continue?",
-                        icon: "warning",
-                        buttons: {
-                            cancelBtn: {
-                                text: "Cancel"
-                            },
-                            yesBtn: {
-                                text: "Yes",
-                                value: "yes"
-                            }
+                swal({
+                    title: "Do you want to continue?",
+                    icon: "warning",
+                    buttons: {
+                        cancelBtn: {
+                            text: "Cancel"
                         },
-                        dangerMode: true,
-                    })
-                            .then((value) => {
-                                if (value == "yes") {
-
-                                    // fetch post request
-                                    fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-edit-user",
-                                            {
-                                                method: 'POST',
-                                                body: JSON.stringify({
-                                                    requestId: "2222",
-                                                    method: "editUser",
-                                                    user: {
-                                                        id: editId,
-                                                        fullname: fullname,
-                                                        address: address,
-                                                        nationality: nationality,
-                                                        nic: nic,
-                                                        birthdate: birthdate,
-                                                        age: age,
-                                                        gender: gender
-                                                    }
-
-                                                }),
-                                                headers: {
-                                                    "Content-type": "application/json; charset=UTF-8"
-                                                }
-                                            }
-                                    )
-                                            .then(function (response) {
-                                                return response.json()
-                                            })
-
-                                    swal({
-                                        title: "Good job!",
-                                        text: "User successfully updated!",
-                                        icon: "success"
-                                    })
-                                            .then((added) => {
-                                                if (added) {
-                                                    document.location.replace('./viewAllUsers.html');
-                                                }
-                                            });
-
-                                } else {
-
-                                }
-                            });
-
+                        yesBtn: {
+                            text: "Yes",
+                            value: "yes"
+                        }
+                    },
+                    dangerMode: true,
                 })
+                        .then((value) => {
+                            if (value == "yes") {
 
+                                // fetch post request
+                                fetch("http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-edit-user",
+                                        {
+                                            method: 'POST',
+                                            body: JSON.stringify({
+                                                requestId: "2222",
+                                                method: "editUser",
+                                                user: {
+                                                    id: editId,
+                                                    fullname: fullname,
+                                                    address: address,
+                                                    nationality: nationality,
+                                                    nic: nic,
+                                                    birthdate: birthdate,
+                                                    age: age,
+                                                    gender: gender
+                                                }
 
-            </script>
+                                            }),
+                                            headers: {
+                                                "Content-type": "application/json; charset=UTF-8"
+                                            }
+                                        }
+                                )
+                                        .then(function (response) {
+                                            return response.json()
+                                        })
 
-        </div>
+                                swal({
+                                    title: "Good job!",
+                                    text: "User successfully updated!",
+                                    icon: "success"
+                                })
+                                        .then((added) => {
+                                            if (added) {
+                                                document.location.replace('./viewAllUsers.html');
+                                            }
+                                        });
+
+                            } else {
+
+                            }
+                        });
+
+            })
+
+        </script>
+
     </body>
 </html>

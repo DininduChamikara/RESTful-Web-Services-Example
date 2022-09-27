@@ -10,31 +10,11 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets/css/styles.css">
         <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-
+        <link rel="stylesheet" href="assets/css/styles_new.css">
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-        <style>
-            .main-container{
-                display: flex;
-                flex-direction: row;
-                justify-content:space-around;
-            }
-            .chart-div{
-                background: rgb(241 210 67 / 10%);
-                border: 1px solid #DECCB2;
-                border-radius: 20px;
-                /*margin: 20px;*/
-                padding: 20px;
-            }
-            td>span>i{
-                cursor: pointer;
-            }
-        </style>
-
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
         <title>View All</title>
 
     </head>
@@ -88,9 +68,9 @@ and open the template in the editor.
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Full Name</th>
-                                    <th>Address</th>
+                                    <th style="width:30px">ID</th>
+                                    <th style="width:180px">Full Name</th>
+                                    <th style="width:200px">Address</th>
                                     <th>Nationality</th>
                                     <th>NIC</th>
                                     <th>Birthdate</th>
@@ -115,7 +95,9 @@ and open the template in the editor.
         <script src="assets/js/main.js"></script>
 
         <script>
+            
 
+            // to perform edit //
             function passEditId(id) {
 
                 swal({
@@ -140,14 +122,12 @@ and open the template in the editor.
 
                             }
                         });
-
-
                 return false;
             }
 
 
+            // Delete functionality //
             const api_url_delete = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-delete-user";
-
 
             function deleteMsgBox(userId) {
                 swal({
@@ -190,6 +170,9 @@ and open the template in the editor.
                         })
                 location.reload();
             }
+            
+            
+            // to view all users // 
 
             const api_url_view = "http://localhost:8080/NIC_Validation_REST_copy_2/resources/user/json-all-users";
 
@@ -214,7 +197,9 @@ and open the template in the editor.
                 console.log("Array size is " + data.users.length);
                 count = data.users.length;
                 dataset = data;
+                
                 data.users = data.users.reverse();
+                
                 for (var i = 0; i < count; i++) {
                     tableContent = tableContent +
                             "<tr>" +
@@ -233,11 +218,10 @@ and open the template in the editor.
                 }
 
                 document.getElementById("table_body").innerHTML = tableContent;
+                
                 // jQuery Functions
-
                 $(function () {
                     const rowsPerPage = 10;
-//                    const rowsPerPage = $('#maxRows');
                     const rows = $('#table_body tr');
                     const rowsCount = rows.length;
                     const pageCount = Math.ceil(rowsCount / rowsPerPage); // avoid decimals
@@ -272,9 +256,7 @@ and open the template in the editor.
                         let sliceLen = rows.slice(start, end).length;
                         let deductIndex = rowsPerPage - sliceLen;
                         // Show the proper rows for this page.
-//                        rows.slice(start, end).show();
                         rows.slice(start - deductIndex, end - deductIndex).show();
-//                        console.log("slice length is " + rows.slice(start, end).length)
                     }
                 });
             }

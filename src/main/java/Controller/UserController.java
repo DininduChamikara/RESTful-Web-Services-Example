@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controller;
 
 import Model.AgeGroup;
@@ -30,11 +26,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.POST;
 import javax.ws.rs.core.MediaType;
 
-/**
- * REST Web Service
- *
- * @author acer
- */
+
 @Path("user")
 @RequestScoped
 public class UserController {
@@ -208,8 +200,6 @@ public class UserController {
 
         return toBeSend;
 
-//          return "Success";
-
     }
     
 
@@ -233,7 +223,6 @@ public class UserController {
 
         User user = new User();
         user.setNic(nic.getAsString());
-//        user.setNic("992608366v");
 
         //create an json object to send as response
         String responseString = "{'requestId':" + requestId + ",'responseCode':1,'responseMessage':'Successfully Generated', 'nicInfo':" + new Gson().toJson(getNicData(user)) + "}";
@@ -344,13 +333,10 @@ public class UserController {
 
         //we can read json properties by name 
         JsonElement requestId = jsonObj.get("requestId");
-        JsonElement requestMethod = jsonObj.get("method");
-        
-        
+        JsonElement requestMethod = jsonObj.get("method");  
 
         NationalityCount nc = new NationalityCount();
         
-
         //create an json object to send as response
         String responseString = "{'requestId':" + requestId + ",'responseCode':1,'responseMessage':'Successfully retrieved', 'nationalityCounts':" + new Gson().toJson(nc.getNationalityCount()) + "}";
         System.out.println("Response String:" + responseString);
@@ -401,57 +387,6 @@ public class UserController {
         return toBeSend;
     }
     
-
-    @GET
-    @Path("all-users")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String getAllUsers() {
-        List<User> users = User.find();
-        return new Gson().toJson(users);
-    }
-
-    @POST
-    @Path("save-user")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String saveUser(User user) {
-        save(user);
-        return user.getId();
-    }
-
-    @POST
-    @Path("edit-user")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String editUser(User user) {
-        edit(user);
-        return user.getId();
-    }
-
-    @POST
-    @Path("nic-generate")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String nicGenarate(User user) {
-//        getNicData(user);
-        return new Gson().toJson(getNicData(user));
-    }
-
-    @POST
-    @Path("retrieve-db")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String dbRetrieve(User user) {
-//        getNicData(user);
-        return new Gson().toJson(getUserData(user));
-    }
-
-    @POST
-    @Path("delete-user")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void deleteUser(User user) {
-        System.out.println("Delete user user controller calling");
-        deleteUserData(user);
-    }
 
     @PUT
     @Consumes(MediaType.APPLICATION_XML)

@@ -1,0 +1,71 @@
+/*Dashboard Styles*/
+
+.main-container{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+}
+.chart-div{
+    background: rgb(241 210 67 / 10%);
+    border: 1px solid #DECCB2;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+td>span>i{
+    cursor: pointer;
+}
+
+
+/*Add user page Styles*/
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=number], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+div {
+    border-radius: 5px;
+    padding: 0px;
+    padding: 0px;
+}
+
+form{
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+#error{
+    color: red;
+}
